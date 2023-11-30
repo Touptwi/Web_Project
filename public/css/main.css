@@ -5,14 +5,14 @@
     height: calc(98vh);
 }
 #header {
-    background: #ff0000;
+    background: #ffffff;
 }
 #content {
-    background: #00ff00;
+    background: #ffffff;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: repeat(6, 1fr);
 }
 #footer {
-    background: #0000ff;
+    background: #ffffff;
 }

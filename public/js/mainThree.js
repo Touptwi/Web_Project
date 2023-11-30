@@ -1,29 +1,111 @@
+import * as THREE from 'three';
 
-console.log("I do something !");
+import { OBJLoader } from '../jsm/loaders/OBJLoader.js';
+import { OrbitControls } from '../jsm/controls/OrbitControls.js';
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+let camera, scene, renderer;
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
-let container = document.querySelector('#content-center');
-container.appendChild( renderer.domElement );
+let object;
+
+init();
 
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+function init() {
 
-camera.position.z = 5;
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20 );
+	camera.position.z = 2.5;
 
-function animate() {
-	requestAnimationFrame( animate );
+	// scene
 
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
+	scene = new THREE.Scene();
 
-	renderer.render( scene, camera );
+	const ambientLight = new THREE.AmbientLight( 0xffffff );
+	scene.add( ambientLight );
+
+	const pointLight = new THREE.PointLight( 0xffffff, 15 );
+	camera.add( pointLight );
+	scene.add( camera );
+
+	// manager
+
+	function loadModel() {
+
+		object.traverse( function ( child ) {
+
+			if ( child.isMesh ) child.material.map = texture;
+
+		} );
+
+		object.position.y = - 0.95;
+		object.scale.setScalar( 0.01 );
+		scene.add( object );
+
+		render();
+
+	}
+
+	const manager = new THREE.LoadingManager( loadModel );
+
+	// texture
+
+	const textureLoader = new THREE.TextureLoader( manager );
+	const texture = textureLoader.load( 'models/textures/uv_grid_opengl.jpg', render );
+	texture.colorSpace = THREE.SRGBColorSpace;
+
+	// model
+
+	function onProgress( xhr ) {
+
+		if ( xhr.lengthComputable ) {
+
+			const percentComplete = xhr.loaded / xhr.total * 100;
+			console.log( 'model ' + percentComplete.toFixed( 2 ) + '% downloaded' );
+
+		}
+
+	}
+
+	function onError() {}
+
+	const loader = new OBJLoader( manager );
+	loader.load( 'models/Room.obj', function ( obj ) {
+
+		object = obj;
+
+	}, onProgress, onError );
+
+	//
+
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth*0.7, window.innerHeight*0.7 );
+	let container = document.querySelector('#content-center');
+	container.appendChild( renderer.domElement );
+
+	//
+
+	const controls = new  OrbitControls( camera, renderer.domElement );
+	controls.minDistance = 2;
+	controls.maxDistance = 5;
+	controls.addEventListener( 'change', render );
+
+	//
+
+	window.addEventListener( 'resize', onWindowResize );
+
 }
 
-animate();
+function onWindowResize() {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+function render() {
+
+	renderer.render( scene, camera );
+
+}

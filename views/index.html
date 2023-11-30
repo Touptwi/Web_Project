@@ -2,19 +2,20 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/main.css">
-    </head>
 
-    <script src="three.min.js"></script>
+        <script type="importmap"> {"imports": {"three": "./build/three.module.js"}} </script>
+        <script async src="js/es-module-shims.js"></script>
+    </head>
 
 <body id="container">
 
-<div id="header">Hello !!</div>
+<div id="header"></div>
 <div id="content">
-    <div id="content-left">LEFT</div>
+    <div id="content-left"></div>
     <div id="content-center"></div>
-    <div id="content-right">RIGHT</div>
+    <div id="content-right"></div>
 </div>
-<div id="footer">FOOTER</div>
+<div id="footer"></div>
 
 <script type="module" src="js/mainThree.js"></script>
 
