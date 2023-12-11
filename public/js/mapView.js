@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 
-import Stats from '../jsm/libs/stats.module.js';
-
 import { OrbitControls } from '../jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from '../jsm/environments/RoomEnvironment.js';
 
@@ -11,14 +9,12 @@ import { DRACOLoader } from '../jsm/loaders/DRACOLoader.js';
 let mixer;
 
 const clock = new THREE.Clock();
-let container = document.querySelector('#content-center');
-
-const stats = new Stats();
-container.appendChild( stats.dom );
+let container = document.querySelector('#map');
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setSize( window.innerWidth*0.2, window.innerHeight*0.3 );
+renderer.setViewport( window.innerWidth*-0.066, 0, window.innerWidth*0.3, window.innerHeight*0.3 );
 container.appendChild( renderer.domElement );
 
 const pmremGenerator = new THREE.PMREMGenerator( renderer );
@@ -65,7 +61,8 @@ window.onresize = function () {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( window.innerWidth*0.2, window.innerHeight*0.3 );
+    renderer.setViewport( window.innerWidth*-0.066, 0, window.innerWidth*0.3, window.innerHeight*0.3 );
 
 };
 
@@ -79,8 +76,6 @@ function animate() {
     mixer.update( delta );
 
     controls.update();
-
-    stats.update();
 
     renderer.render( scene, camera );
 

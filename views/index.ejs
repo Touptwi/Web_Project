@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/main.css">
+
+        <script type="importmap"> {"imports": {"three": "./build/three.module.js"}} </script>
+        <script async src="js/es-module-shims.js"></script>
+    </head>
+
+<body id="container">
+
+<div id="header"></div>
+<div id="content">
+    <div id="content-center"></div>
+    <div id="content-right">
+        <div id="map"></div>
+        <div id="chat">
+            <%- include('chat-box') %>
+            <div id="chat-message">
+                <form action="sendmessage">
+                    <input type="text" name="msg">
+                    <input type="submit" name="send">   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer"></div>
+
+<script type="module" src="js/mainView.js"></script>
+<script type="module" src="js/mapView.js"></script>
+
+</body>
+</html> 
