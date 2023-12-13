@@ -2,7 +2,11 @@ const express = require("express");
 const path = require('path')
 const fs = require('fs');
 
+
 var app = express();
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -18,18 +22,24 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/sendmessage",function(request,response){
-  // console.log(request)
-  let data = JSON.parse(fs.readFileSync('data/chat.json'))
-  data.push({"name": "test", "msg":request.query.msg})
-  fs.writeFile('data/chat.json', JSON.stringify(data, null, 2), err => {
+io.on('connection', (socket)=>{
+  console.log("a user connected via socket!")
+  socket.on('disconnect', ()=>{
+      console.log("a user disconnected!")
+  })
+  socket.on('chat message', (msg)=>{
+      console.log("Message: "+msg)
+      let data = JSON.parse(fs.readFileSync('data/chat.json'))
+      data.push({"name": "test", "msg":msg})
+      fs.writeFile('data/chat.json', JSON.stringify(data, null, 2), err => {
       if (err) { throw err }
       console.log('JSON data is saved.')
+      })
+      io.emit('chat message', msg)
   })
-  // response.redirect('/')
 })
 
 // This tells the app in which port it should run
-app.listen(8000, function () {
-    console.log("Application started, check: http://localhost:%d/", 8000)
+server.listen(8000, function () {
+    console.log("Server started, check: http://localhost:%d", 8000)
 });

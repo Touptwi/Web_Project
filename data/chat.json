@@ -6,21 +6,5 @@
   {
     "name": "test",
     "msg": "hello world"
-  },
-  {
-    "name": "test",
-    "msg": "test 2"
-  },
-  {
-    "name": "test",
-    "msg": "test 3"
-  },
-  {
-    "name": "test",
-    "msg": "test 4"
-  },
-  {
-    "name": "test",
-    "msg": "test 5"
   }
 ]

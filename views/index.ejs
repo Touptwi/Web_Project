@@ -15,10 +15,10 @@
     <div id="content-right">
         <div id="map"></div>
         <div id="chat">
-            <%- include('chat-box') %>
+            <div id="chat-box"> <%- include('chat-box') %> </div>
             <div id="chat-message">
-                <form action="sendmessage">
-                    <input type="text" name="msg">
+                <form action="" id="sendmsg">
+                    <input type="text" name="msg" id="msg">
                     <input type="submit" name="send">   
                 </form>
             </div>
@@ -29,6 +29,24 @@
 
 <script type="module" src="js/mainView.js"></script>
 <script type="module" src="js/mapView.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    $('#sendmsg').submit(function(){
+        var msg = $('#msg').val();
+        if(msg.length > 0)
+            socket.emit('chat message', msg);
+        else
+            console.log("Enter a valid msg :)");
+        $('#msg').val("");
+        return false;
+    });
+    socket.on('chat message', function(msg){
+        $("#chat-box").append("<div> <span> test </span>"+msg+"</div>");
+    });
+</script>
 
 </body>
 </html> 
