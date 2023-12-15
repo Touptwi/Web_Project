@@ -43,14 +43,26 @@
 
 <div id="footer"></div>
 
-<script> let Users = JSON.parse('<%-users%>'); </script>
-<script type="module" src="js/mainView.js"></script>
+<script> 
+    let Users = JSON.parse('<%-users%>');
+    let userX = 0;
+    let userZ = 0;
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
     var socket = io();
+    socket.on('connection', function(data){
+        Users = data;
+        for (var user of Users) {
+            if(user.id == socket.id) {
+                userX = user.positionX;
+                userZ = user.positionZ;
+            }
+        }
+    });
     $('#sendmsg').submit(function(){
         var msg = $('#msg').val();
         var name = '<%-name%>';
@@ -61,11 +73,24 @@
         $('#msg').val("");
         return false;
     });
+    setInterval(function(){
+        socket.emit('update coords', socket.id, userX, userZ);
+    }, 50);
     socket.on('chat message', function(name, msg){
         $("#chat-box").append("<div> <span> "+name+": </span>"+msg+"</div>");
     });
+    socket.on('update coords', function(id, X, Z){
+        for (var user of Users) {
+            if(user.id == id) {
+                user.positionX = X;
+                user.positionZ = Z;
+            }
+        }
+    });
     
 </script>
+
+<script type="module" src="js/mainView.js"></script>
 
 </body>
 </html> 

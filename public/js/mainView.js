@@ -26,6 +26,8 @@ animate();
 function init() {
 
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+	camera.position.x = userX;
+	camera.position.z = userZ;
 	camera.position.y = 10;
 
 	map_camera  = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -200,7 +202,7 @@ function init() {
 		box.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
 
 		//scene.add( box );
-		objects.push( new THREE.Mesh( boxGeometry, boxMaterial ) );
+		//objects.push( new THREE.Mesh( boxGeometry, boxMaterial ) );
 
 	}
 
@@ -210,12 +212,12 @@ function init() {
 		const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} ); 
 		const capsule = new THREE.Mesh( geometry, material ); 
 
-		capsule.position.x = user.positionX*10;
+		capsule.position.x = user.positionX;
 		capsule.position.y = 7;
-		capsule.position.z = user.positionZ*10;
+		capsule.position.z = user.positionZ;
 
 		scene.add( capsule );
-		objects.push( new THREE.Mesh( geometry, material ) );
+		objects.push( capsule );
 	} 
 
 	//
@@ -305,12 +307,20 @@ function animate() {
 
 	}
 
+	Users.forEach(function (user, userIndex) {
+
+		objects[userIndex].position.x = user.positionX;
+		objects[userIndex].position.z = user.positionZ;
+
+	})
 
 	prevTime = time;
 
 	renderer.render( scene, camera );
 	map_camera.position.x = camera.position.x;
 	map_camera.position.z = camera.position.z;
+	userX = camera.position.x;
+	userZ = camera.position.z;
 	map_renderer.render( scene, map_camera );
 
 }

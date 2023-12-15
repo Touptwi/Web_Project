@@ -35,31 +35,39 @@ app.get("/connexion", (req, res) => {
   res.redirect('/connected')
 });
 
-io.on('connection', (socket)=>{
-  console.log("%d connected via socket!", socket.id)
+io.on('connection', socket=>{
+  console.log( socket.id + " connected via socket! ")
+  let data = JSON.parse(fs.readFileSync('data/users.json'))
+  for ( var user  of data ) {
+		if(user.nickname == nickname) {
+      user.id = socket.id;
+    }
+	}
+  fs.writeFile('data/users.json', JSON.stringify(data, null, 2), err => {
+  if (err) { throw err }
+  })
+  io.emit('connection', data)
   socket.on('disconnect', ()=>{
-      console.log("%d disconnected!", socket.id)
+    console.log( socket.id + " disconnected! ")
   })
   socket.on('chat message', (name, msg)=>{
-      let data1 = JSON.parse(fs.readFileSync('data/chat.json'))
-      data1.push({"name": name, "msg":msg})
-      fs.writeFile('data/chat.json', JSON.stringify(data1, null, 2), err => {
-      if (err) { throw err }
-      console.log('JSON data is saved.')
-      })
-      io.emit('chat message', name, msg)
+    let data = JSON.parse(fs.readFileSync('data/chat.json'))
+    data.push({"name": name, "msg":msg})
+    fs.writeFile('data/chat.json', JSON.stringify(data, null, 2), err => {
+    if (err) { throw err }
+    })
+    io.emit('chat message', name, msg)
   })
   socket.on('update coords', (id, X, Z)=>{
-    let data2 = JSON.parse(fs.readFileSync('data/users.json'))
-    for (var user of data2) {
+    //let data = JSON.parse(fs.readFileSync('data/users.json'))
+    for (var user of data) {
       if(user.id == id) {
         user.positionX = X;
         user.positionZ = Z;
       }
     }
-    fs.writeFile('data/users.json', JSON.stringify(data2, null, 2), err => {
+    fs.writeFile('data/users.json', JSON.stringify(data, null, 2), err => {
     if (err) { throw err }
-    console.log('JSON data is saved.')
     })
     io.emit('update coords', id, X, Z)
 })

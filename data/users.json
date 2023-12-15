@@ -1,16 +1,16 @@
 [
-    {
-        "id": 0,
-        "nickname": "user0",
-        "password": "password0",
-        "positionX": 0,
-        "positionZ": 0
-    },
-    {
-        "id": 1,
-        "nickname": "user1",
-        "password": "password1",
-        "positionX": 1,
-        "positionZ": 1
-    }
+  {
+    "id": "0x01l6ZCgVD_ZFvgAAAF",
+    "nickname": "user0",
+    "password": "password0",
+    "positionX": 27.2817335898059,
+    "positionZ": 31.710897655401784
+  },
+  {
+    "id": "-iiP4__BK8llvEGjAAAH",
+    "nickname": "user1",
+    "password": "password1",
+    "positionX": -51.30194299873665,
+    "positionZ": -28.766396074454537
+  }
 ]

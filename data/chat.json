@@ -2,9 +2,5 @@
   {
     "name": "SERVER",
     "msg": "Welcome to this project"
-  },
-  {
-    "name": "test",
-    "msg": "hello world"
   }
 ]
