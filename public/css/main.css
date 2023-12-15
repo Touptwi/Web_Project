@@ -24,6 +24,11 @@
     border-radius: 25px;
     margin: 25px;
 }
+#content-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(300px, 300px) 1fr;
+}
 #chat {
     display: grid;
     grid-template-columns: 1fr;
@@ -34,12 +39,50 @@
     border-radius: 25px;
     margin: 25px;
     padding: 25px;
+    overflow-y: auto;
+    max-height: calc(100vh - 400px);
 }
 #chat-message {
     background: #ffffff;
     border-radius: 25px;
     margin: 25px;
 }
+#sendmsg {
+    padding-top: 14px;
+    padding-left: 24px;
+}
 #footer {
     background: #516b8b;
+}
+
+#blocker {
+    border-radius: 25px;
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    top: 50%;
+    right: calc(400px + 10vw);
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.5);
+}
+
+#instructions {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#sendnickname {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: scale(2) translate(-50%, -50%);
 }

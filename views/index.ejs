@@ -11,41 +11,60 @@
 
 <div id="header"></div>
 <div id="content">
-    <div id="content-center"></div>
+    <div id="content-center">
+        <div id="blocker">
+            <div id="instructions">
+                <p style="font-size:36px">
+                    Click to move
+                </p>
+                <p>
+                    Move: WASD<br/>
+                    Look: MOUSE
+                </p>
+            </div>
+        </div>
+    </div>
     <div id="content-right">
         <div id="map"></div>
         <div id="chat">
             <div id="chat-box"> <%- include('chat-box') %> </div>
             <div id="chat-message">
                 <form action="" id="sendmsg">
-                    <input type="text" name="msg" id="msg">
-                    <input type="submit" name="send">   
+                    <label> <%-name%> :</label>
+                    <input type="text" size="30" name="msg" id="msg">
+                    <input type="submit" name="send" value="Send">   
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+
 <div id="footer"></div>
 
+<script> let Users = JSON.parse('<%-users%>'); </script>
 <script type="module" src="js/mainView.js"></script>
-<script type="module" src="js/mapView.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+
 <script>
     var socket = io();
     $('#sendmsg').submit(function(){
         var msg = $('#msg').val();
+        var name = '<%-name%>';
         if(msg.length > 0)
-            socket.emit('chat message', msg);
+            socket.emit('chat message', name, msg);
         else
             console.log("Enter a valid msg :)");
         $('#msg').val("");
         return false;
     });
-    socket.on('chat message', function(msg){
-        $("#chat-box").append("<div> <span> test </span>"+msg+"</div>");
+    socket.on('chat message', function(name, msg){
+        $("#chat-box").append("<div> <span> "+name+": </span>"+msg+"</div>");
     });
+    
 </script>
 
 </body>
