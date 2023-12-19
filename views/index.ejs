@@ -5,9 +5,15 @@
 
         <script type="importmap"> {"imports": {"three": "./build/three.module.js"}} </script>
         <script async src="js/es-module-shims.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+
     </head>
 
 <body id="container">
+
+
 
 <div id="header"></div>
 <div id="content">
@@ -39,29 +45,44 @@
     </div>
 </div>
 
-
-
 <div id="footer"></div>
 
 <script> 
+    var name = '<%-name%>';
     let Users = JSON.parse('<%-users%>');
-    let userX = 0;
-    let userZ = 0;
+    let userX, userZ, userRx, userRy, userRz;
+    var shared_view = false;
+    let shared_username = null;
+    for (var user of Users) {
+        $("#header").append("<button id='"+user.nickname+"'> "+user.nickname+" </button>");
+        document.getElementById(user.nickname).onclick = function() {setShared(this);};
+        document.getElementById(user.nickname).style.background = user.color;
+        if(user.nickname == '<%-name%>')
+                userX = user.positionX;
+                userZ = user.positionZ;
+                userRx = user.rotationX;
+                userRy = user.rotationY;
+                userRz = user.rotationZ;
+    }
+    function setShared(button){
+        nickname = button.id;
+        if(nickname == name) {
+            shared_view = false;
+        } else {
+            shared_view=true;
+        }
+        shared_username = nickname; 
+    };
 </script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
 
 <script>
     var socket = io();
-    socket.on('connection', function(data){
-        Users = data;
-        for (var user of Users) {
-            if(user.id == socket.id) {
-                userX = user.positionX;
-                userZ = user.positionZ;
+    socket.on('connection', function(nickname, id){
+        for ( var user  of Users ) {
+            if(user.nickname == nickname) {
+                user.id = id;
             }
-        }
+	    }
     });
     $('#sendmsg').submit(function(){
         var msg = $('#msg').val();
@@ -74,20 +95,22 @@
         return false;
     });
     setInterval(function(){
-        socket.emit('update coords', socket.id, userX, userZ);
+        socket.emit('update coords', Users, socket.id, userX, userZ, userRx, userRy, userRz);
     }, 50);
     socket.on('chat message', function(name, msg){
         $("#chat-box").append("<div> <span> "+name+": </span>"+msg+"</div>");
     });
-    socket.on('update coords', function(id, X, Z){
+    socket.on('update coords', function(id, X, Z, Rx, Ry, Rz){
         for (var user of Users) {
             if(user.id == id) {
                 user.positionX = X;
                 user.positionZ = Z;
+                user.rotationX = Rx;
+                user.rotationY = Ry;
+                user.rotationZ = Rz;
             }
         }
     });
-    
 </script>
 
 <script type="module" src="js/mainView.js"></script>

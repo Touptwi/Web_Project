@@ -40,13 +40,13 @@ io.on('connection', socket=>{
   let data = JSON.parse(fs.readFileSync('data/users.json'))
   for ( var user  of data ) {
 		if(user.nickname == nickname) {
+      io.emit('connection', nickname, socket.id)
       user.id = socket.id;
     }
 	}
   fs.writeFile('data/users.json', JSON.stringify(data, null, 2), err => {
   if (err) { throw err }
   })
-  io.emit('connection', data)
   socket.on('disconnect', ()=>{
     console.log( socket.id + " disconnected! ")
   })
@@ -58,18 +58,20 @@ io.on('connection', socket=>{
     })
     io.emit('chat message', name, msg)
   })
-  socket.on('update coords', (id, X, Z)=>{
-    //let data = JSON.parse(fs.readFileSync('data/users.json'))
-    for (var user of data) {
+  socket.on('update coords', (users, id, X, Z, Rx, Ry, Rz)=>{
+    for (var user of users) {
       if(user.id == id) {
         user.positionX = X;
         user.positionZ = Z;
+        user.rotationX = Rx;
+        user.rotationY = Ry;
+        user.rotationZ = Rz;
       }
     }
-    fs.writeFile('data/users.json', JSON.stringify(data, null, 2), err => {
+    fs.writeFile('data/users.json', JSON.stringify(users, null, 2), err => {
     if (err) { throw err }
     })
-    io.emit('update coords', id, X, Z)
+    io.emit('update coords', id, X, Z, Rx, Ry, Rz)
 })
 })
 

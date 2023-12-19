@@ -1,16 +1,22 @@
 [
   {
-    "id": "0x01l6ZCgVD_ZFvgAAAF",
+    "id": "1neDuGlhBjIkTmJwAABL",
     "nickname": "user0",
-    "password": "password0",
-    "positionX": 27.2817335898059,
-    "positionZ": 31.710897655401784
+    "color": "red",
+    "positionX": 46.300168921910924,
+    "positionZ": -112.02948260186572,
+    "rotationX": 0.46614520176306035,
+    "rotationY": -0.2306993180883101,
+    "rotationZ": 0.8540998041838345
   },
   {
-    "id": "-iiP4__BK8llvEGjAAAH",
+    "id": "BFqucsbysKIcU4h1AAAb",
     "nickname": "user1",
-    "password": "password1",
-    "positionX": -51.30194299873665,
-    "positionZ": -28.766396074454537
+    "color": "green",
+    "positionX": 57.42152741317651,
+    "positionZ": -95.5160813399164,
+    "rotationX": -0.5666785102241032,
+    "rotationY": -0.20062906530544308,
+    "rotationZ": -0.7991391895063436
   }
 ]
