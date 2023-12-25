@@ -50,19 +50,21 @@
 <script> 
     var name = '<%-name%>';
     let Users = JSON.parse('<%-users%>');
-    let userX, userZ, userRx, userRy, userRz;
+    let userX, userZ, userRx, userRy, userRz, userColor;
     var shared_view = false;
     let shared_username = null;
     for (var user of Users) {
         $("#header").append("<button id='"+user.nickname+"'> "+user.nickname+" </button>");
         document.getElementById(user.nickname).onclick = function() {setShared(this);};
         document.getElementById(user.nickname).style.background = user.color;
-        if(user.nickname == '<%-name%>')
+        if(user.nickname == '<%-name%>') {
                 userX = user.positionX;
                 userZ = user.positionZ;
                 userRx = user.rotationX;
                 userRy = user.rotationY;
                 userRz = user.rotationZ;
+                userColor = user.color;
+        }
     }
     function setShared(button){
         nickname = button.id;
@@ -88,7 +90,7 @@
         var msg = $('#msg').val();
         var name = '<%-name%>';
         if(msg.length > 0)
-            socket.emit('chat message', name, msg);
+            socket.emit('chat message', name, msg, userColor);
         else
             console.log("Enter a valid msg :)");
         $('#msg').val("");
@@ -97,8 +99,8 @@
     setInterval(function(){
         socket.emit('update coords', Users, socket.id, userX, userZ, userRx, userRy, userRz);
     }, 50);
-    socket.on('chat message', function(name, msg){
-        $("#chat-box").append("<div> <span> "+name+": </span>"+msg+"</div>");
+    socket.on('chat message', function(name, msg, color){
+        $("#chat-box").append("<div> <span style='background:"+color+"'> "+name+" </span> : "+msg+"</div>");
     });
     socket.on('update coords', function(id, X, Z, Rx, Ry, Rz){
         for (var user of Users) {

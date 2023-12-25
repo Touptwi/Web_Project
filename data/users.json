@@ -1,22 +1,22 @@
 [
   {
-    "id": "HucWi3pnqvqy29AYAAAF",
+    "id": "mdoI76ChKxPyMhMpAAAJ",
     "nickname": "user0",
     "color": "red",
-    "positionX": 45.91955388638179,
-    "positionZ": -104.88394600119013,
-    "rotationX": 0.6234939828356442,
-    "rotationY": -0.1256668685497162,
-    "rotationZ": 0.7716625502877885
+    "positionX": 54.06695831362676,
+    "positionZ": -97.82940628233727,
+    "rotationX": -0.14280856902159839,
+    "rotationY": 0.19082252441973227,
+    "rotationZ": -0.9711809701533922
   },
   {
-    "id": "BFqucsbysKIcU4h1AAAb",
+    "id": "TgqPsPEuKX8ELCAhAAAH",
     "nickname": "user1",
     "color": "green",
-    "positionX": 57.42152741317651,
-    "positionZ": -95.5160813399164,
-    "rotationX": -0.5666785102241032,
-    "rotationY": -0.20062906530544308,
-    "rotationZ": -0.7991391895063436
+    "positionX": 37.80421219096968,
+    "positionZ": -129.00674989570535,
+    "rotationX": 0.256634459136802,
+    "rotationY": -0.43856383319624626,
+    "rotationZ": 0.861278421067065
   }
 ]

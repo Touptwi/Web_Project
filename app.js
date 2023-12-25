@@ -50,13 +50,13 @@ io.on('connection', socket=>{
   socket.on('disconnect', ()=>{
     console.log( socket.id + " disconnected! ")
   })
-  socket.on('chat message', (name, msg)=>{
+  socket.on('chat message', (name, msg, color)=>{
     let data = JSON.parse(fs.readFileSync('data/chat.json'))
-    data.push({"name": name, "msg":msg})
+    data.push({"name": name, "msg":msg, "color":color})
     fs.writeFile('data/chat.json', JSON.stringify(data, null, 2), err => {
     if (err) { throw err }
     })
-    io.emit('chat message', name, msg)
+    io.emit('chat message', name, msg, color)
   })
   socket.on('update coords', (users, id, X, Z, Rx, Ry, Rz)=>{
     for (var user of users) {
